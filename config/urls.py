@@ -21,13 +21,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-<<<<<<< HEAD
-    path('', include('dashboard.urls')),
+    path('', include('accounts.urls')),
+    path('', include('dashboard.urls'))
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-=======
-    path('', include('accounts.urls')),
-    path('', include('dashboard.urls'))
-]+static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
->>>>>>> 237e5026e7cc9a068f1374713cb9a1b377e18ad3
