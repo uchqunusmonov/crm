@@ -48,17 +48,16 @@ class Postion(models.Model):
     type =(
 
         ('',''),
-        ('chief','chief'),
+        ('director','director'),
         ('deputy','deputy'),
         ('worker','worker'),
     )
 
 
-    section = models.ForeignKey(Section, on_delete=models.PROTECT)
     position = models.CharField(max_length=250, choices=type, null=True, default=False)
     description = models.CharField(max_length=250, null=True)
     task = models.TextField(null=True, blank=True)
-    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
     def __str__(self) -> str:
@@ -83,8 +82,6 @@ class Email(models.Model):
 
 
 class Employe(models.Model):
-
-
     choice = (
         ('',''),
         ('Male','Male'),
@@ -93,11 +90,11 @@ class Employe(models.Model):
 
 
     
+    user = models.OneToOneField(User, on_delete=models.PROTECT, related_name="profile")
     position = models.ForeignKey(Postion, on_delete=models.PROTECT)
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
     section = models.ForeignKey(Section, on_delete=models.PROTECT)
     slug = models.SlugField()
-    author = models.ForeignKey('self', on_delete=models.PROTECT,null=True, blank=True)
+    author = models.ForeignKey('self', on_delete=models.CASCADE,null=True, blank=True)
     first_name = models.CharField(max_length=150, null=True, blank=True)
     last_name = models.CharField(max_length=150, null=True, blank=True)
     email = models.EmailField(max_length=150, null=True, blank=True)
