@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 # Create your views here.
+<<<<<<< HEAD
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import authenticate
 from accounts.models import User, Employe
@@ -28,3 +29,13 @@ def dashboard(request, username):
 
 
     return render(request, 'dashboard.html', context)
+=======
+
+
+def index(request):
+    return render(request, 'index.html')
+
+
+def dashboard(request):
+    return render(request, 'dashboard.html')
+>>>>>>> 7f2061c7ab5ff73ea00efc0c281c5298dd14c277
