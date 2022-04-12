@@ -41,7 +41,7 @@ def user_registor(request, username):
     }
 
 
-    return render(request, 'Sign Up.html', context)
+    return render(request, 'SignUp.html', context)
 
 
 def user_login(request):
@@ -59,7 +59,7 @@ def user_login(request):
     context = {
         'form':form
     }
-    return render(request, 'Sign In_.html', context)
+    return render(request, 'SignIn.html', context)
 
 def logout_user(request):
     logout(request)
