@@ -4,7 +4,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import Http404, HttpRequest, HttpResponseRedirect
 from django.shortcuts import redirect, render, HttpResponse
 from .forms import *
+from django.contrib import messages
 # Create your views here.
+def error_500(request, username):
+    user = User.objects.get(username=username)
+    context = {
+        'user':user
+
+    }
+    return render(request, '500.html', context)
+
 
 def error_404(request, username):
     user = User.objects.get(username=username)
@@ -54,7 +63,16 @@ def user_login(request):
             login(request, user)
             return redirect('dashboard', user.username)
         else:
-            return redirect('user_registor')
+            form = AddAdmin(request.POST, request.FILES)
+            if form.is_valid():
+                form = form.cleaned_data['password']
+                print(form)
+            if password!=form:
+                form = AddAdmin()
+                messages.error(request, 'password')
+            else:
+                form = AddAdmin()
+                messages.error(request, 'username')
     
     context = {
         'form':form
@@ -68,7 +86,12 @@ def logout_user(request):
 
 def user_profile(request, slug):
     employe = Employe.objects.get(slug=slug)
+    user = User.objects.get(username=request.user.username)
+    director = Employe.objects.get(user=user)
+    position = Postion.objects.get(id=director.position.id)
+    section = Section.objects.get(id=director.section.id)
     user_change = AdminChange(instance=employe)
+    positions = Postion.objects.all()
     if request.method == 'POST':
         user_change = AdminChange(request.POST, request.FILES, instance=employe)
         print('1')
@@ -80,6 +103,10 @@ def user_profile(request, slug):
     context = {
         'employe':employe,
         'user_change':user_change,
+        'position':position,
+        'section':section,
+        'positions':positions,
+        'users':user
     }
 
     return render(request, 'account/profile.html', context)
@@ -141,7 +168,7 @@ def employe(request, username):
                 position = PositionForm(request.POST, request.FILES)
                 if position.is_valid():
                     position.save()
-                    return redirect('employe', username)
+                    return redirect('user_registor', username)
                 else:
                     return HttpResponse('REGISTER HAS DONE')
     return render(request, 'account/employe.html', context)
