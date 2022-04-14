@@ -57,3 +57,8 @@ class AdminChange(forms.ModelForm):
                 'class':'form-control'
             }),
         }
+
+class AddUser(forms.ModelForm):
+    class Meta:
+        model = AdduserCount
+        fields = ['users']

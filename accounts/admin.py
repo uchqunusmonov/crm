@@ -21,3 +21,8 @@ class AdminProfile(admin.ModelAdmin):
 @admin.register(Email)
 class AdminEmail(admin.ModelAdmin):
     list_display = ['id', 'email']
+
+
+@admin.register(AdduserCount)
+class AdminCountUser(admin.ModelAdmin):
+    list_display = ['id', 'users']

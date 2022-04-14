@@ -4,7 +4,7 @@ from django.shortcuts import render
 from django.shortcuts import redirect, render
 from django.contrib.auth.forms import authenticate
 from accounts.models import User, Employe
-from accounts.models import Postion
+from accounts.models import Postion, AdduserCount
 # Create your views here.
 
 
@@ -18,8 +18,8 @@ def dashboard(request, username):
         position = Postion.objects.filter(id=employe.position.id)
         user_count = User.objects.all().count()
         employes = Employe.objects.all()
-        s = 22
-        procent = (user_count*100)/s
+        for i in AdduserCount.objects.all():
+            procent = (user_count*100)/i.users
     else:
         return redirect('erorr_505', username)
     context = {

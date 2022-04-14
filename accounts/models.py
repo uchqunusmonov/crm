@@ -117,3 +117,5 @@ class Employe(models.Model):
     def __str__(self) -> str:
         return str(self.user)
 
+class AdduserCount(models.Model):
+    users = models.PositiveIntegerField()
