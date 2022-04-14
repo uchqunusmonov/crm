@@ -86,35 +86,33 @@ def logout_user(request):
     return redirect('user_login')
 
 
-def user_profile(request, slug):
-    employe = Employe.objects.get(slug=slug)
-    user = User.objects.get(username=request.user.username)
-    director = Employe.objects.get(user=user)
-    position = Postion.objects.get(id=director.position.id)
-    section = Section.objects.get(id=director.section.id)
-    user_change = AdminChange(instance=employe)
-    positions = Postion.objects.all()
+def user_profile(request, username):
+    user = User.objects.get(username=username)
+    admin = User.objects.get(username=request.user.username)
+    admin_employe = Employe.objects.get(user=admin)
+    employe = Employe.objects.get(user=user)
+    position = Postion.objects.get(id=admin_employe.position.id)
+    section = Section.objects.get(id=admin_employe.section.id)
+    user_change = AdminChange(request.POST or None, instance=employe)
     user_count =  AdduserCount.objects.first()
     user_add = AddUser(request.POST or None, request.FILES or None, instance=user_count)
     if request.method == 'POST':
         user_add = AddUser(request.POST, request.FILES, instance=user_count)
         user_change = AdminChange(request.POST, request.FILES, instance=employe)
-        print('1')
         if user_change.is_valid() or user_add.is_valid():
-            print('2')
             user_change.save()
             if user.username=="admin":
                 user_add.save()
-            return redirect('user_profile', employe.slug)
+            return redirect('user_profile', user.username)
 
     context = {
         'employe':employe,
         'user_change':user_change,
         'position':position,
         'section':section,
-        'positions':positions,
         'user':user,
-        'adduser':user_add
+        'adduser':user_add,
+        'admin':admin,
     }
 
     return render(request, 'account/profile.html', context)
