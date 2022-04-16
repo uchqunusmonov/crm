@@ -36,7 +36,7 @@ class PositionForm(forms.ModelForm):
 class AdminChange(forms.ModelForm):
     class Meta:
         model = Employe
-        fields = ['first_name', 'last_name', 'email', 'bio','adress', 'status', 'gender']
+        fields = ['first_name', 'last_name', 'email', 'bio','adress', 'status', 'gender','position']
 
         widgets = {
             'first_name':forms.TextInput(attrs={
@@ -57,3 +57,8 @@ class AdminChange(forms.ModelForm):
                 'class':'form-control'
             }),
         }
+
+class AddUser(forms.ModelForm):
+    class Meta:
+        model = AdduserCount
+        fields = ['users']
