@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+                <!-- ### $App Screen Content ### -->
+        <main class="main-content bgc-grey-100">
+          <div id="mainContent">
+            <div class="container-fluid">
+              <h4 class="c-grey-900 mT-10 mB-30">Basic Tables</h4>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="bgc-white bd bdrs-3 p-20 mB-20">
+                    <h4 class="c-grey-900 mB-20">Users</h4>
+                    <table class="table">
+                      <thead class="thead-dark">
+                        <tr>
+                          <th scope="col">#</th>
+                          <th scope="col">Username</th>
+                          <th scope="col">Section</th>
+                          <th scope="col">Position</th>
+                          <th scope="col">Edit</th>
+                          <th scope="col">Delete</th>
+                        </tr>
+                      </thead>
+                      {% for el in employes %}
+                      <tbody>
+                        <tr>
+                          <th scope="row">{{ el.id }}</th>
+                          <td>{{ el.user }}</td>
+                          <td>{{ el.section }}</td>
+                          <td>{{ el.position }}</td>
+                          <td><a href="{% url 'user_profile' el.user %}">Edit</a></td>
+                          <td><a href="{% url 'delete-employe' el.user %}">Delete</a></td>
+                        </tr>
+                      </tbody>
+                      {% endfor %}
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+
+{% endblock content %}

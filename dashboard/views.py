@@ -9,25 +9,30 @@ from accounts.models import Postion, AdduserCount
 
 
 def dashboard(request, username):
-    user = User.objects.get(username=username)
     if request.user.username !=username:
         return redirect('error', username)
-    elif Employe.objects.filter(user=user):
-        user = User.objects.get(username=username)
-        employe = Employe.objects.get(user=user)
-        position = Postion.objects.filter(id=employe.position.id)
-        user_count = User.objects.all().count()
-        employes = Employe.objects.all()
-        for i in AdduserCount.objects.all():
-            procent = (user_count*100)/i.users
     else:
-        return redirect('erorr_505', username)
+        user = User.objects.get(username=username)
+        if request.user.username !=username:
+            return redirect('error', username)
+        elif Employe.objects.filter(user=user):
+            user = User.objects.get(username=username)
+            employe = Employe.objects.get(user=user)
+            position1 = Postion.objects.get(id=employe.position.id)
+            user_count = User.objects.all().count()
+            employes = Employe.objects.all()
+            users = User.objects.all()
+            for i in AdduserCount.objects.all():
+                procent = (user_count*100)/i.users
+        else:
+            return redirect('erorr_505', username)
     context = {
         'user':user,
         'employe':employe,
         'procent':procent,
-        'position':position,
+        'position1':position1,
         'user_count':user_count,
-        'employes':employes
+        'employes':employes,
+        'users':users
     }
     return render(request, 'dashboard.html', context)
