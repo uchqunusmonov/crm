@@ -7,47 +7,39 @@ from .forms import *
 from django.contrib import messages
 # Create your views here.
 def error_500(request, username):
-    user = User.objects.get(username=username)
-    context = {
-        'user':user
-
-    }
-    return render(request, '500.html', context)
+    return render(request, '500.html')
 
 
 def error_404(request, username):
-    user = User.objects.get(username=username)
-    employe = Employe.objects.filter(user=user)
-
-    context = {
-        'employe':employe
-    }
-    return render(request, '404.html', context)
+    return render(request, '404.html')
 
 
 
 def user_registor(request, username):
-    user = User.objects.get(username=username)
-    employe = Employe.objects.get(user=user)
-    postion = Postion.objects.filter(id=employe.position.id)
-    users = User.objects.all().count()
-    user_count = AdduserCount.objects.first()
-    for el in postion:
-        if request.user.username !=username or el.position == "worker" or el.position == "deputy":
-            return redirect('error' , username)
-        elif users < user_count.users:
-            form = AddAdmin()
-            if request.method == 'POST':
-                form = AddAdmin(request.POST)
-                if form.is_valid():
-                    user = form.save(commit=False)
-                    user.set_password(user.password)
-                    user.save()
-                    return redirect('employe', username)
-                else:
-                    return redirect('user_registor', username)
-        else:
-            return HttpResponse("You do not have permission to add a new user !!!")
+    if request.user.username != username:
+        return redirect('error' , username)
+    else:
+        user = User.objects.get(username=username)
+        employe = Employe.objects.get(user=user)
+        postion = Postion.objects.filter(id=employe.position.id)
+        users = User.objects.all().count()
+        user_count = AdduserCount.objects.first()
+        for el in postion:
+            if request.user.username !=username or el.position == "worker" or el.position == "deputy":
+                return redirect('error' , username)
+            elif users < user_count.users:
+                form = AddAdmin()
+                if request.method == 'POST':
+                    form = AddAdmin(request.POST)
+                    if form.is_valid():
+                        user = form.save(commit=False)
+                        user.set_password(user.password)
+                        user.save()
+                        return redirect('employe', username)
+                    else:
+                        return redirect('user_registor', username)
+            else:
+                return HttpResponse("You do not have permission to add a new user !!!")
 
     context = {
         'form':form,
@@ -91,7 +83,7 @@ def user_profile(request, username):
     admin = User.objects.get(username=request.user.username)
     admin_employe = Employe.objects.get(user=admin)
     employe = Employe.objects.get(user=user)
-    position = Postion.objects.get(id=admin_employe.position.id)
+    position1 = Postion.objects.get(id=admin_employe.position.id)
     section = Section.objects.get(id=admin_employe.section.id)
     user_change = AdminChange(request.POST or None, instance=employe)
     user_count =  AdduserCount.objects.first()
@@ -100,7 +92,8 @@ def user_profile(request, username):
         user_add = AddUser(request.POST, request.FILES, instance=user_count)
         user_change = AdminChange(request.POST, request.FILES, instance=employe)
         if user_change.is_valid() or user_add.is_valid():
-            user_change.save()
+            if section.id==employe.section.id or request.user.username=="admin":
+                user_change.save()
             if user.username=="admin":
                 user_add.save()
             return redirect('user_profile', user.username)
@@ -108,7 +101,7 @@ def user_profile(request, username):
     context = {
         'employe':employe,
         'user_change':user_change,
-        'position':position,
+        'position1':position1,
         'section':section,
         'user':user,
         'adduser':user_add,
@@ -179,6 +172,32 @@ def employe(request, username):
                 if position.is_valid():
                     position.save()
                     return redirect('user_registor', username)
-                else:
-                    return HttpResponse('REGISTER HAS DONE')
     return render(request, 'account/employe.html', context)
+
+def user_tablets(request, username):
+    if request.user.username !=username:
+        return redirect('error', username)
+    else:
+        user = User.objects.get(username=username)
+        employe = Employe.objects.get(user=user)
+        position1 = Postion.objects.get(id=employe.position.id)
+        if request.user.username !=username or position1.position != "director":
+            return redirect('error', username)
+        elif Employe.objects.filter(user=user):
+            user = User.objects.get(username=username)
+            employe = Employe.objects.get(user=user)
+            position1 = Postion.objects.get(id=employe.position.id)
+            section = Section.objects.get(id=employe.section.id)
+            employes = Employe.objects.all()
+    context = {
+        'position1':position1,
+        'employes':employes,
+        'section':section,
+    }
+    return render(request, 'basic_tablets.html', context)
+
+def delete_employe(request, username):
+    user = User.objects.get(username=username)
+    employe = Employe.objects.get(user=user)
+    employe.delete()
+    return redirect('user_tablets', request.user.username)
