@@ -5,7 +5,7 @@ from django.utils.text import slugify
 
 
 class User(AbstractUser):
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True)
 
 
 
@@ -34,7 +34,7 @@ class Section(models.Model):
 
     name = models.CharField(max_length=250, null=True, choices=section_type, default=False)
     section = models.ForeignKey('Section', on_delete=models.PROTECT, related_name='sections', null=True, blank=True)
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
@@ -71,7 +71,7 @@ class Postion(models.Model):
 class Email(models.Model):
     email = models.EmailField(max_length=250, blank=True, null=True)
     author = models.ForeignKey(User, models.CASCADE, related_name='authors', blank=True, null=True)
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True)
 
 
     def __str__(self) -> str:
@@ -96,7 +96,7 @@ class Employe(models.Model):
     user = models.OneToOneField(User, on_delete=models.PROTECT, related_name="profile")
     position = models.ForeignKey(Postion, on_delete=models.PROTECT)
     section = models.ForeignKey(Section, on_delete=models.PROTECT)
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True)
     author = models.ForeignKey('self', on_delete=models.CASCADE,null=True, blank=True)
     first_name = models.CharField(max_length=150, null=True, blank=True)
     last_name = models.CharField(max_length=150, null=True, blank=True)
