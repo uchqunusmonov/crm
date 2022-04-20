@@ -25,7 +25,7 @@ def calendar(request, username):
                         'form':form,
                 }
             else:
-                task = Task.objects.filter(section=employe.section.id).first()
+                task = Employe.objects.filter(section=employe.section.id).first()
                 task_users = Employe.objects.filter(section=employe.section.id)
                 context = {
                     'task':task,
