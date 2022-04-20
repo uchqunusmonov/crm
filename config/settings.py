@@ -31,6 +31,7 @@ INSTALLED_APPS = [
     'accounts',
     'tasks',
     'dashboard',
+    'calendar_crm',
 
 ]
 

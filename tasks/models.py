@@ -11,20 +11,19 @@ class Task(models.Model):
         ('not completed','not completed'),
     )
 
-
-
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255,null=True,blank=True)
+    start = models.DateTimeField(null=True,blank=True)
+    end = models.DateTimeField(null=True,blank=True)
     employe = models.ManyToManyField(Employe, blank=True)
-    creator = models.ForeignKey(Employe, on_delete=models.PROTECT, related_name='creators')
-    checker = models.ManyToManyField(Employe, related_name='checkers')
+    creator = models.ForeignKey(Employe, on_delete=models.PROTECT, related_name='creators', blank=True)
+    checker = models.ManyToManyField(Employe, related_name='checkers', blank=True)
     active = models.BooleanField(default=False)
-    deadline = models.DateTimeField(blank=True)
-    starteddate = models.DateTimeField(auto_now_add=True,blank=True)
-    upload = models.DateTimeField(blank=True)
-    section = models.ManyToManyField(Section)
+    upload = models.DateTimeField(blank=True, null=True)
+    section = models.ManyToManyField(Section, blank=True)
     status = models.CharField(max_length=100, choices=choice, default=False, blank=True)
-    name = models.CharField(max_length=100,blank=True)
     description = models.TextField(blank=True)
-    slug = models.SlugField()
+    slug = models.SlugField(blank=True)
     file = models.FileField(upload_to='files/', blank=True, null=True)
     image = models.ImageField(upload_to='task_images/', blank=True, null=True)
 
