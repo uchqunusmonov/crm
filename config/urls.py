@@ -25,7 +25,7 @@ urlpatterns = [
     path('', include('dashboard.urls')),
     path('', include('tasks.urls')),
     path('email_box/', include('email_crm.urls')),
-    
+    path('chat/', include('chat.urls')),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
