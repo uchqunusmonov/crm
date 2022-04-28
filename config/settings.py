@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'calendar_crm',
     'chat',
     'contact',
+    'email_crm'
 
 ]
 
