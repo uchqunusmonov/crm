@@ -1,6 +1,5 @@
 from django import forms
 from .models import *
-from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 
 class AddAdmin(forms.ModelForm):
     class Meta:
@@ -20,6 +19,7 @@ class AddAdmin(forms.ModelForm):
                 'id':'password',
             }),
         }
+
 
 class PositionForm(forms.ModelForm):
     class Meta:
@@ -57,8 +57,8 @@ class AdminChange(forms.ModelForm):
                 'class':'form-control'
             }),
         }
-
 class AddUser(forms.ModelForm):
     class Meta:
         model = AdduserCount
         fields = ['users']
+        

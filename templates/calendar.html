@@ -8,7 +8,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.4.0/fullcalendar.min.js"></script>
     <script>
-
       $(document).ready(function () {
           
           var calendar = $('#calendar').fullCalendar({
@@ -36,12 +35,59 @@
                         dataType: "json",
                         success: function (data) {
                             calendar.fullCalendar('refetchEvents');
-                            alert('Added task')
+
+
+                            const tasks = document.getElementById('emp_tasks');
+                            const tasks_cnt = document.getElementById('tasks_cnt');
+                            tasks.innerHTML = "";
+
+                            $.ajax({
+                              url: '{% url "get-tasks" %}',
+                              type: 'GET',
+                              success: function(data) {
+                                (data.tasks).forEach(task => {
+                                  const taskHTML = `
+                                      <li class="bdB peers ai-c jc-sb fxw-nw" id="task_card">
+                                        <a onclick="taskDetail(${task.id})" class="td-n p-20 peers fxw-nw mR-20 peer-greed c-grey-900" data-toggle="modal" data-target="#calendar-edit">
+                                          <div class="peer mR-15">
+                                            <i class="fa fa-fw fa-clock-o c-red-500"></i>
+                                          </div>
+                                          <div class="peer" id='id_task'>
+                                            <span class="fw-600">${ task.title }</span>
+                                            <div class="c-grey-600">
+                                              <span class="c-grey-700">${ task.start }</span>
+                                            </div>
+                                          </div>
+                                        </a>
+                                        <div class="peers mR-15">
+                                          <div class="peer">
+                                            <a href="javascript:void(0);" data-toggle="modal" data-target="#calendar-edit" class="td-n c-deep-purple-500 cH-blue-500 fsz-md p-5">
+                                              <i class="fa-solid fa-marker"></i>
+                                            </a>
+                                          </div>
+                                          <div class="peer">
+                                            <a href="/delete-task/${ task.slug }/" class="td-n c-red-500 cH-blue-500 fsz-md p-5">
+                                              <i class="fa-solid fa-trash"></i>
+                                            </a>
+                                          </div>
+                                        </div>
+                                      </li>`
+
+                                  tasks.innerHTML += taskHTML;
+                                });
+                                tasks_cnt.innerHTML = `${data.tasks_cnt}`;
+                                console.log(tasks_cnt);
+                              }
+                            });
+
+                      
                         },
                         error: function (data) {
                             alert('There is a problem!!!');
                         }
-                    });
+                      });
+
+                     
                   }
               },
               {% if position1.position == "director" %}
@@ -85,43 +131,38 @@
                   });
               },
               {% endif %}
-              {% if position1.position == "director" %}
-              eventClick: function (task) {
-                  if (confirm("Are you sure you want to remove it?")) {
-                      var id = task.id;
-                      $.ajax({
-                          type: "GET",
-                          url: '/remove',
-                          data: {'id': id},
-                          dataType: "json",
-                          success: function (data) {
-                              calendar.fullCalendar('refetchEvents');
-                              alert('Event Removed');
-                          },
-                          error: function (data) {
-                              alert('There is a problem!!!');
-                          }
-                      });
-                  }
-              },
-              {% endif %}
-
           });
-      });
+          
+      })
+    </script>
+    <script>
+      function taskDetail(id) {
+        const taskTitle = document.getElementById('taskTitle');
+        const taskStart = document.getElementById('taskStart');
+        const taskEnd = document.getElementById('taskEnd');
+        const taskDescription = document.getElementById('taskDescription')
+        taskTitle.innerHTML = "";
+        taskStart.innerHTML = "";
+        taskEnd.innerHTML = "";
+        taskDescription.innerHTML = "";
 
-  </script>
-  <script>
-   $(document).ready(function()
-   {
-    var $id_employe=$('#id_employe'),
-        $id_section=$('#id_section'),
-        $options=$id_section.find('option');
-        $id_employe.on('change', function()
-        {
-          $id_section.html($options.filter('[value="'+this.value+'"]'));
-        }).trigger('change');
-   });
- </script>
+        $.ajax({
+          url: '{% url "task-detail" %}',
+          type: 'GET',
+          data: {
+            'task_id': id,
+          },
+          
+          success: function(data) {
+              taskTitle.innerHTML += `<input type="text" name="title" value="${ data.task_title }" class="form-control bdc-grey-200" maxlength="100" id="id_title">`;
+              taskStart.innerHTML += `<input type="text" name="start" value="${ data.task_start }" class="form-control bdc-grey-200 start-date" id="id_start">`;
+              taskEnd.innerHTML += `<input type="text" name="end" value="${ data.task_end }" class="form-control bdc-grey-200 end-date" id="id_end">`;
+              taskDescription.innerHTML += ` <label class="fw-500">Event title</label>
+              <textarea name="description" cols="40" rows="10" value="${ data.task_des }" class="form-control bdc-grey-200" id="id_description">${ data.task_des }</textarea>`;
+            },
+        });
+      };
+    </script>
 {% endblock static %}
 {% block content %}
                 <!-- ### $App Screen Content ### -->
@@ -139,35 +180,36 @@
                       <button type="button" class="mT-nv-50 pos-a r-10 t-2 btn cur-p bdrs-50p p-0 w-3r h-3r btn-warning">
                         <i class="ti-plus"></i>
                       </button>
-                      <ul class="m-0 p-0 mT-20">
-                        <li class="bdB peers ai-c jc-sb fxw-nw">
-                          <a class="td-n p-20 peers fxw-nw mR-20 peer-greed c-grey-900" href="javascript:void(0);" data-toggle="modal" data-target="#calendar-edit">
-                            <div class="peer mR-15">
-                              <i class="fa fa-fw fa-clock-o c-red-500"></i>
-                            </div>
-                            <div class="peer">
-                              <span class="fw-600">All Day Event</span>
-                              <div class="c-grey-600">
-                                <span class="c-grey-700">Nov 01 - </span>
-                                <i>Website Development</i>
+                      <ul class="m-0 p-0 mT-20" id="emp_tasks">
+                          {% for i in task_count %}
+                            <li class="bdB peers ai-c jc-sb fxw-nw" id="task_card">
+                              <a onclick="taskDetail({{ i.id }})" class="td-n p-20 peers fxw-nw mR-20 peer-greed c-grey-900" href="javascript:void(0);" data-toggle="modal" data-target="#calendar-edit">
+                                <div class="peer mR-15">
+                                  <i class="fa fa-fw fa-clock-o c-red-500"></i>
+                                </div>
+                                <div class="peer" id='id_task'>
+                                  <span class="fw-600">{{ i.title }}</span>
+                                  <div class="c-grey-600">
+                                    <span class="c-grey-700">{{ i.start }}</span>
+                                  </div>
+                                </div>
+                              </a>
+                              <div class="peers mR-15">
+                                <div class="peer">
+                                  <a onclick="taskDetail({{ i.id }})" data-toggle="modal" data-target="#calendar-edit" class="td-n c-deep-purple-500 cH-blue-500 fsz-md p-5">
+                                    <i class="fa-solid fa-marker"></i>
+                                  </a>
+                                </div>
+                                <div class="peer">
+                                  <a href="{% url 'delete-task' i.slug %}" class="td-n c-red-500 cH-blue-500 fsz-md p-5">
+                                    <i class="fa-solid fa-trash"></i>
+                                  </a>
+                                </div>
                               </div>
-                            </div>
-                          </a>
-                          <div class="peers mR-15">
-                            <div class="peer">
-                              <a href="http://symfonator.herokuapp.com/admin/calendar" class="td-n c-deep-purple-500 cH-blue-500 fsz-md p-5">
-                                <i class="ti-pencil"></i>
-                              </a>
-                            </div>
-                            <div class="peer">
-                              <a href="http://symfonator.herokuapp.com/admin/calendar" class="td-n c-red-500 cH-blue-500 fsz-md p-5">
-                                <i class="ti-trash"></i>
-                              </a>
-                            </div>
-                          </div>
-                        </li>
-                      </ul>
-                    </div>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </div>
                   </div>
                 </div>
                 <div class="col-md-8">
@@ -183,54 +225,50 @@
                       <h5 class="m-0">Add Event</h5>
                     </div>
                     <div class="modal-body">
-                      <form  method="POST" id="formEmploye">{% csrf_token %}
+                      <form  method="POST">{% csrf_token %}
                         <div class="form-group">
                           <label class="fw-500">Event title</label>
-                          {{ form.title }}
+                          <span id="taskTitle"><input type="text" name="title" value="{{ form.title }}" class="form-control bdc-grey-200" maxlength="100" id="id_title"></span>
                         </div>
                         <div class="row">
-                          <label for="">Employe</label>
-                          <select name="employe"  id="id_employe">
-                            <option value="">--Select--</option>
-                            {% for el in task_users %}
-                            <option value="{{ el.id }}">{{ el.user }}</option>
-                            {% endfor %}
-                          </select>
-                          <label for="">Section</label>
-                          <select name="section" id="id_section">
-                            <option class="after" value="">--Select--</option>
-                            {% for i in task_users %}
-                            <option class="after" value="{{ i.id }}">{{ i.section }}</option>
-                            {% endfor %}
-                          </select>
+                          <div class="form-group col-md-5 row">
+                            <label for="">Employe</label>
+                            <select name="employe"  id="id_employe" class="form-control">
+                              <option value="{{ employes.id }}">{{ employes.user }}</option>
+                            </select>
+                            <label for="">Section</label>
+                            <select name="section" id="id_section" class="form-control">
+                              <option class="after" value="{{ section.id }}">{{ section.name }}</option>
+                            </select>
+                          </div>
                         </div>
                         <div class="row">
                           <div class="col-md-6"><br>
                             <label class="fw-500">Start</label>
-                            <div class="timepicker-input input-icon form-group">
+                            <div class="timepicker-input input-icon form-group" id="taskStart">
                               <div class="input-group">
                                 <div class="input-group-addon bgc-white bd bdwR-0">
                                   <i class="ti-calendar"></i>
                                 </div>
-                                {{ form.start }}
+                                <input type="text" name="start" value="{{ form.start }}" class="form-control bdc-grey-200 start-date" id="id_start">
                               </div>
                             </div>
                           </div>
                           <div class="col-md-6"><br>
                             <label class="fw-500">End</label>
-                            <div class="timepicker-input input-icon form-group">
+                            <div class="timepicker-input input-icon form-group" id="taskEnd">
                               <div class="input-group">
                                 <div class="input-group-addon bgc-white bd bdwR-0">
                                   <i class="ti-calendar"></i>
                                 </div>
-                                {{ form.end }}
+                                <input type="text" name="end" value="{{ form.end }}" class="form-control bdc-grey-200 end-date" id="id_end">
                               </div>
                             </div>
                           </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group" id="taskDescription">
                           <label class="fw-500">Event title</label>
-                          {{ form.description }}
+                          <textarea name="description" cols="40" rows="10" value="{{ form.description }}" class="form-control bdc-grey-200" id="id_description"></textarea>
                         </div>
                         <div class="text-right">
                           <button class="btn btn-primary cur-p">Done</button>
@@ -243,5 +281,4 @@
             </div>
           </div>
         </main>
-        <p id="demo" ></p>
 {% endblock content %}

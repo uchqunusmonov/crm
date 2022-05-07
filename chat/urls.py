@@ -4,6 +4,6 @@ from .views import *
 
 
 urlpatterns = [
-    path('', chat, name='chat'),
+    path('<str:username>', chat, name='chat'),
     path('send-message/', send_message, name='send-message'),
 ]

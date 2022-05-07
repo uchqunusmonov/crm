@@ -6,7 +6,16 @@ from django.utils.text import slugify
 
 class User(AbstractUser):
     slug = models.SlugField(blank=True)
+    has_profile = models.BooleanField(default=False)
 
+
+
+    def has_profile_true(self):
+        self.has_profile = True
+
+
+    def has_profile_false(self):
+        self.has_profile = False
 
 
     def save(self, *args, **kwargs):
@@ -34,7 +43,7 @@ class Section(models.Model):
 
     name = models.CharField(max_length=250, null=True, choices=section_type, default=False)
     section = models.ForeignKey('Section', on_delete=models.PROTECT, related_name='sections', null=True, blank=True)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField()
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
@@ -71,7 +80,7 @@ class Postion(models.Model):
 class Email(models.Model):
     email = models.EmailField(max_length=250, blank=True, null=True)
     author = models.ForeignKey(User, models.CASCADE, related_name='authors', blank=True, null=True)
-    slug = models.SlugField(blank=True)
+    slug = models.SlugField()
 
 
     def __str__(self) -> str:
@@ -93,10 +102,10 @@ class Employe(models.Model):
 
 
     
-    user = models.OneToOneField(User, on_delete=models.PROTECT, related_name="profile")
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     position = models.ForeignKey(Postion, on_delete=models.PROTECT)
-    section = models.ForeignKey(Section, on_delete=models.PROTECT)
-    slug = models.SlugField(blank=True)
+    section = models.ForeignKey(Section, on_delete=models.PROTECT, related_name='task_section')
+    slug = models.SlugField()
     author = models.ForeignKey('self', on_delete=models.CASCADE,null=True, blank=True)
     first_name = models.CharField(max_length=150, null=True, blank=True)
     last_name = models.CharField(max_length=150, null=True, blank=True)
@@ -119,6 +128,9 @@ class Employe(models.Model):
 
     def __str__(self) -> str:
         return str(self.user)
+
+    
+
 
 class AdduserCount(models.Model):
     users = models.PositiveIntegerField()
