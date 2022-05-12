@@ -1,10 +1,10 @@
 from django import forms
 from .models import *
-
+from django.contrib.auth.forms import PasswordChangeForm
 class AddAdmin(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['username','password']
+        fields = ['username','password', 'remember_me']
 
         widgets = {
             'username':forms.TextInput(attrs={
@@ -24,7 +24,7 @@ class AddAdmin(forms.ModelForm):
 class PositionForm(forms.ModelForm):
     class Meta:
         model = Employe
-        fields = ['section','position', 'user', 'author']
+        fields = ['section','position', 'user', 'author', 'country']
 
         def __init__(self, user, **kwargs) -> None:
             super(PositionForm, self).__init__(**kwargs)
@@ -61,4 +61,10 @@ class AddUser(forms.ModelForm):
     class Meta:
         model = AdduserCount
         fields = ['users']
-        
+
+class MyPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["old_password"].widget = forms.PasswordInput(attrs={"class": "form-control"})
+        self.fields["new_password1"].widget = forms.PasswordInput(attrs={"class": "form-control"})
+        self.fields["new_password2"].widget = forms.PasswordInput(attrs={"class": "form-control"})

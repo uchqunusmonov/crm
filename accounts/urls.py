@@ -16,7 +16,7 @@ Including another URLconf
 
 from django.urls import path
 
-from accounts.views import user_registor, user_login, logout_user, user_profile, employe, error_404, error_500,user_tablets, delete_employe
+from accounts.views import *
 
 urlpatterns = [
     path('register/<str:username>/', user_registor, name='user_registor'),
@@ -27,5 +27,6 @@ urlpatterns = [
     path('404/<str:username>/', error_404, name='error'),
     path('505-erorrs/<str:username>/', error_500, name='erorr_505'),
     path('user-tablets/<str:username>/', user_tablets, name='user_tablets'),
-    path('delete-employe/<str:username>/', delete_employe, name='delete-employe')
+    path('delete-employe/<str:username>/', delete_employe, name='delete-employe'),
+    path('change-password/<str:username>/', change_password, name='change_password'),
 ]

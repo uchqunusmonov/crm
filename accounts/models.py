@@ -7,7 +7,7 @@ from django.utils.text import slugify
 class User(AbstractUser):
     slug = models.SlugField(blank=True)
     has_profile = models.BooleanField(default=False)
-
+    remember_me = models.BooleanField(default=False)
 
 
     def has_profile_true(self):
@@ -100,6 +100,23 @@ class Employe(models.Model):
         ('Female','Female'),
     )
 
+    COUNTRY = (
+        ('Tashkent','Tashkent'),
+        ('Samarkand','Samarkand'),
+        ('Andijan','Andijan'),
+        ('Karakalpakstan','Karakalpakstan'),
+        ('Ferghana', 'Ferghana'),
+        ('Bukhoro','Bukhoro'),
+        ('Namangan', 'Namangan'),
+        ('Khorezm', 'Khorezm'),
+        ('Kashkadarya','Kashkadarya'),
+        ('Jizzakh','Jizzakh'),
+        ('Surkhandaryo','Surkhandaryo'),
+        ('Navoi','Navoi'),
+        ('Sirdaryo','Sirdaryo'),
+
+    )
+
 
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
@@ -116,6 +133,12 @@ class Employe(models.Model):
     status = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to='avatar/', null=True, blank=True)
     email_add = models.ManyToManyField(Email)
+    country = models.CharField(max_length=120, choices=COUNTRY, blank=True, null=True)
+    is_online = models.BooleanField(default = False)
+
+
+    def get_country(el):
+        return Employe.objects.filter(country=el).count()
 
 
     def save(self, *args, **kwargs):

@@ -5,12 +5,12 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from .decorators import unauthenticated_user
 from tasks.models import *
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.signals import user_logged_out, user_logged_in
+from django.dispatch import receiver
 
 
 
-
-
-# Create your views here.
 @login_required(login_url='user_login')
 def error_500(request, username):
     return render(request, '500.html')
@@ -57,11 +57,13 @@ def user_login(request):
     if request.method=="POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
+        remember_me = request.POST.get('remember_me')
+        form = AddAdmin(request.POST)
         user = authenticate(username=username, password=password)
-       
- 
         if user:
             login(request, user)
+            if remember_me:
+                user1 = User.objects.filter(username=username).update(remember_me=True)
             return redirect('dashboard', user.username)
         else:
             form = AddAdmin(request.POST, request.FILES)
@@ -71,16 +73,40 @@ def user_login(request):
                 messages.error(request, 'Password error')
             except:
                 messages.error(request, 'Login error')
-    
+        
     context = {
             'form':form
         }
     return render(request, 'SignIn.html', context)
 
 
+def change_password(request, username):
+    if request.method == 'POST':
+        form = MyPasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Your password was successfuly updated')
+            return redirect('user_profile', request.user.username)
+        else:
+            messages.error(request, 'Please correct the error below.')
+        
+    else:
+        form = MyPasswordChangeForm(request.user)
+
+    return render(request, 'account/change_password.html', {'form':form})
+
+
+
+
+
+@login_required(login_url='user_login')
 def logout_user(request):
+    user = User.objects.filter(username=request.user.username).update(remember_me=False, username=request.user.username)
     logout(request)
     return redirect('user_login')
+
+
 
 @login_required(login_url='user_login')
 def user_profile(request, username):
@@ -112,7 +138,7 @@ def user_profile(request, username):
         'user':user,
         'adduser':user_add,
         'admin':admin,
-        'task_count':task_count
+        'task_count':task_count,
     }
 
     return render(request, 'account/profile.html', context)
@@ -187,7 +213,8 @@ def user_tablets(request, username):
         'position1':position1,
         'employes':employes,
         'section':section,
-        'task_count':task_count
+        'task_count':task_count,
+        'user':user,
     }
     return render(request, 'basic_tablets.html', context)
 
@@ -197,3 +224,15 @@ def delete_employe(request, username):
     employe.delete()
     user.delete()
     return redirect('user_tablets', request.user.username)
+
+
+@receiver(user_logged_in)
+def got_online(sender, user, request, **kwargs):
+    user.profile.is_online = True
+    user.profile.save()
+
+
+@receiver(user_logged_out)
+def got_offline(sender, user, request, **kwargs):   
+    user.profile.is_online = False
+    user.profile.save()
