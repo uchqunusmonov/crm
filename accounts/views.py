@@ -185,7 +185,7 @@ def employe(request, username):
                     user_data = User.objects.get(id=user_id)
                     user_data.has_profile_true()
                     user_data.save()
-
+                    employe_email = Employe.objects.filter(user=user_data).update(email=user_data.username + '@crm.com')
                     return redirect('user_registor', username)
         else:
             return redirect('error', username)
