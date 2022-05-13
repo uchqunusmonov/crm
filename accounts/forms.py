@@ -2,6 +2,7 @@ from django import forms
 from .models import *
 from django.contrib.auth.forms import PasswordChangeForm
 class AddAdmin(forms.ModelForm):
+    
     class Meta:
         model = User
         fields = ['username','password', 'remember_me']
@@ -9,16 +10,21 @@ class AddAdmin(forms.ModelForm):
         widgets = {
             'username':forms.TextInput(attrs={
                 'class':'form-control',
-                'placeholder':'Username'
+                'placeholder':'Enter your username'
             }),
             'password':forms.TextInput(attrs={
                 'class':'form-control',
-                'placeholder':'Password',
+                'placeholder':'Enter your password',
                 'type':'password',
                 'name':'password',
                 'id':'password',
+                'aria-describedby':'password'
             }),
+            'remember_me':forms.CheckboxInput(attrs={
+                'class':'form-check-input'
+            })
         }
+
 
 
 class PositionForm(forms.ModelForm):

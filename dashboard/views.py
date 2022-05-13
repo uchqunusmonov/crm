@@ -18,7 +18,10 @@ def dashboard(request, username):
         user_count = User.objects.all().count()
         employes = Employe.objects.all()
         users = User.objects.all()
-        task_count = Task.objects.filter(employe=employe)
+        tasks = Task.objects.all()
+        task_count = Task.objects.filter(employe=employe).order_by('-id')
+        count_todos = task_count.count()
+        completed_todo = Task.objects.filter(status=True, employe=employes).order_by('-id')
         employe_country = {}
         for el in Employe.COUNTRY:
             employe_country[el[0]] = Employe.get_country(el[0])
@@ -34,5 +37,8 @@ def dashboard(request, username):
         'users':users,
         'task_count':task_count,
         'employe_country':list(employe_country.values()),
+        'count_todos':count_todos,
+        'completed_todo':completed_todo,
+        'tasks':tasks
     }
     return render(request, 'dashboard.html', context)
