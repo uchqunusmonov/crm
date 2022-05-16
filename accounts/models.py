@@ -104,15 +104,15 @@ class Employe(models.Model):
         ('Tashkent','Tashkent'),
         ('Samarkand','Samarkand'),
         ('Andijan','Andijan'),
-        ('Karakalpakstan','Karakalpakstan'),
+        ('Nukus','Nukus'),
         ('Ferghana', 'Ferghana'),
-        ('Bukhoro','Bukhoro'),
+        ('Bukhara','Bukhara'),
         ('Namangan', 'Namangan'),
-        ('Khorezm', 'Khorezm'),
-        ('Kashkadarya','Kashkadarya'),
+        ('Urganch', 'Urganch'),
+        ('Qarshi','Qarshi'),
         ('Jizzakh','Jizzakh'),
-        ('Surkhandaryo','Surkhandaryo'),
-        ('Navoi','Navoi'),
+        ('Termiz','Termiz'),
+        ('Navoiy','Navoiy'),
         ('Sirdaryo','Sirdaryo'),
 
     )
@@ -135,7 +135,7 @@ class Employe(models.Model):
     email_add = models.ManyToManyField(Email)
     country = models.CharField(max_length=120, choices=COUNTRY, blank=True, null=True)
     is_online = models.BooleanField(default = False)
-    
+    date = models.DateField(auto_now_add=True, null=True)
         
 
 
