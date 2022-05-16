@@ -28,7 +28,7 @@ def user_registor(request, username):
         user = User.objects.get(username=username)
         employe = Employe.objects.get(user=user)
         postion = Postion.objects.get(id=employe.position.id)
-        users = User.objects.all().count()
+        users = User.objects.a  ().count()
         user_count = AdduserCount.objects.first()
         if postion.position in ('director',) and users < user_count.users:
             form = AddAdmin()

@@ -1,8 +1,11 @@
 import email
 from django.urls import path
+from . import views
 
-from email_crm.views import email_send
 
 urlpatterns = [
-     path('', email_send, name= 'email-box'),
+     path('emailbox/<str:username>/', views.emailindex, name= 'email-box'),
+     path("emails", views.compose, name="compose"),
+     path("emails/<int:email_id>/", views.email, name="email"),
+     path("emails/<str:mailbox>/", views.mailbox, name="mailbox"),
 ]

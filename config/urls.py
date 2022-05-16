@@ -24,7 +24,7 @@ urlpatterns = [
     path('', include('accounts.urls')),
     path('', include('dashboard.urls')),
     path('', include('tasks.urls')),
-    path('email_box/', include('email_crm.urls')),
+    path('', include('email_crm.urls')),
     path('chat/', include('chat.urls')),
 ]
 if settings.DEBUG:

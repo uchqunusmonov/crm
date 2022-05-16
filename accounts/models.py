@@ -135,6 +135,8 @@ class Employe(models.Model):
     email_add = models.ManyToManyField(Email)
     country = models.CharField(max_length=120, choices=COUNTRY, blank=True, null=True)
     is_online = models.BooleanField(default = False)
+    
+        
 
 
     def get_country(el):
