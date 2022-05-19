@@ -53,3 +53,18 @@ def dashboard(request, username):
         'coursers':coursers
     }
     return render(request, 'dashboard.html', context)
+
+
+
+def get_weather_json(request):
+
+    user = User.objects.get(username=request.user.username)
+    employe = Employe.objects.get(user=user)
+    weather = get_weather(employe)
+
+    print(weather["temp"])
+
+
+
+    return JsonResponse({'temp':weather["temp"], 'city':weather["city_name"], 'id':weather["id"], 'description':weather["description"],
+    "speed":weather["speed"]})
