@@ -8,7 +8,7 @@ from tasks.models import *
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.signals import user_logged_out, user_logged_in
 from django.dispatch import receiver
-
+from rest_framework.authtoken.models import Token
 
 
 @login_required(login_url='user_login')
@@ -38,6 +38,8 @@ def user_registor(request, username):
                     user = form.save(commit=False)
                     user.set_password(user.password)
                     user.save()
+                    token = Token.objects.create(user=user)
+                    token.save()
                     return redirect('employe', username)
                 else:
                     return redirect('user_registor', username)
@@ -50,19 +52,21 @@ def user_registor(request, username):
 
     return render(request, 'SignUp.html', context)
 
-
 @unauthenticated_user
 def user_login(request):
     form = AddAdmin()
     if request.method=="POST":
         username = request.POST.get('username')
         password = request.POST.get('password')
-        remember_me = request.POST.get('remember_me')
-        form = AddAdmin(request.POST)
+        remember_me = request.POST.get('remember_me', None)
         user = authenticate(username=username, password=password)
         if user:
             login(request, user)
-            if remember_me:
+            if not remember_me:
+                request.session.set_expiry(0)
+                request.session.modified = True
+                user1 = User.objects.filter(username=username).update(remember_me=False)
+            else:
                 user1 = User.objects.filter(username=username).update(remember_me=True)
             return redirect('dashboard', user.username)
         else:

@@ -10,6 +10,9 @@ from django.conf import settings
 import requests
 from .weather import get_weather
 from .course import get_course
+import calendar
+from django.db.models.functions import ExtractMonth
+from django.db.models import Count
 # Create your views here.
 
 
@@ -68,3 +71,56 @@ def get_weather_json(request):
 
     return JsonResponse({'temp':weather["temp"], 'city':weather["city_name"], 'id':weather["id"], 'description':weather["description"],
     "speed":weather["speed"]})
+
+
+def get_data(request, username):
+    print('check_________')
+    NoComplate = Task.objects.filter(status=False).annotate(month=ExtractMonth('start')).values('month').annotate(
+        count=Count('id')).values('month', 'count')
+
+    Complate = Task.objects.filter(status=True).annotate(month=ExtractMonth('upload')).values('month').annotate(
+        count=Count('id')).values('month', 'count')
+
+    ComplateMonth = []
+    ComplateTask = []
+    for d in Complate:
+        ComplateMonth.append(calendar.month_name[d['month']])
+        ComplateTask.append(d['count'])
+
+    NoComplateMonth = []
+    NoComplateTask = []
+    for d in NoComplate:
+        NoComplateMonth.append(calendar.month_name[d['month']])
+        NoComplateTask.append(d['count'])
+
+    new = []
+    check = False
+    for j in range(len(NoComplateMonth)):
+
+        for i in range(len(ComplateMonth)):
+
+            if ComplateMonth[i] == NoComplateMonth[j]:
+                check = True
+                break
+            else:
+                check = False
+
+        if check == True:
+            new.append(ComplateTask[i])
+
+        else:
+            new.append(0)
+    label = NoComplateMonth.copy()
+    for i in range(len(ComplateMonth)):
+        if ComplateMonth[i] not in NoComplateMonth:
+            label.append(ComplateMonth[i])
+
+
+    text = {
+        'NoComMon': NoComplateMonth,
+        'NoComTask': NoComplateTask,
+        'ComMon': ComplateMonth,
+        'ComTask': new,
+    }
+
+    return JsonResponse(text)
