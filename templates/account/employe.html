@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+  <html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sign Up Form</title>
+        <link rel="stylesheet" href="{% static 'css/main.css' %}">
+        <link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+
+      <form method="post" enctype="multipart/form-data">{% csrf_token %}
+      
+        <h1>Sign Up</h1>
+        
+        <fieldset>
+          <legend><span class="number">1</span>Profile</legend>
+          {% if employe_filt %}
+          <label for="job">Section</label>
+          <select name="section" required id="id_section">
+            <option name="employe_filter.section.id" value="{{ employe_filter.section.id }}">{{ employe_filter.section }}</option>
+          </select>
+          {% else %}
+          <label for="job">Section</label>
+          {{ position.section }}
+          {% endif %}
+          <label for="job">Position</label>
+          {{ position.position }}
+          <label for="job">User</label>
+          <select name="user" required="" id="id_user">
+            <option value="" selected="">---------</option>
+            {% for use in users %}
+            <option name="use.id" value="{{ use.id }}">{{ use }}</option>
+            {% endfor %}
+          </select>
+          <label for="job">Country</label>
+          {{ position.country }}
+          <label for="job">Author</label>
+          <select name="author" id="id_author">
+            <option name="employe_filter.author.id" value="{{ employe_filter.author.id }}">{{ employe_filter.user }}</option>     
+          </select>
+        </fieldset>
+        <button type="submit">Sign Up</button>
+      </form>
+      
+    </body>
+</html>
