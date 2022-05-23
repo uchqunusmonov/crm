@@ -136,3 +136,15 @@ LOGIN_URL = '/rango/login'
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False
 SESSION_COOKIE_AGE = 1209600  #
+
+from email_crm.models import Email,User
+
+#email settings
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = '192.168.0.116'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 25
+EMAIL_HOST_USER = User.email
+EMAIL_HOST_PASSWORD = User.password
