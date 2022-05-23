@@ -834,7 +834,7 @@
 
   WebSocket.onopen = send_all_read()
 
-  var messageBody = document.querySelector('#chat-log');
+  var messageBody = document.getElementsByClassName(chat-box);
   messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
   const add_element = (data,box_color) => {        
@@ -846,7 +846,7 @@
         ele = `<p id=${data.msg_id} class="chat_box ml-auto"><small><b>${user}</b> - ${data.timestampe}</small><br/><span style="font-weight: bold;""> • ${data.message}<small><br/>${error_msg ? error_msg :add_read }</small></span><br/></p>`
         
       }
-      document.querySelector('#chat-log').innerHTML += ele
+      document.querySelector('#chatlog').innerHTML += ele
       messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
   }
 
