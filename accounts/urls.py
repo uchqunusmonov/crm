@@ -15,11 +15,11 @@ Including another URLconf
 """
 
 from django.urls import path
-
+from django.contrib.auth import views as auth_views
 from accounts.views import *
 
 urlpatterns = [
-    path('register/<str:username>/', user_registor, name='user_registor'),
+     path('register/<str:username>/', user_registor, name='user_registor'),
     path('', user_login, name='user_login'),
     path('logout/', logout_user, name='logout'),
     path('profile/<str:username>/', user_profile, name='user_profile'),
@@ -29,4 +29,14 @@ urlpatterns = [
     path('user-tablets/<str:username>/', user_tablets, name='user_tablets'),
     path('delete-employe/<str:username>/', delete_employe, name='delete-employe'),
     path('change-password/<str:username>/', change_password, name='change_password'),
+    path('edit-employe/<str:username>/', edit_profile, name='edit_profile'),
+
+
+    path('reset_password/', auth_views.PasswordResetView.as_view(template_name="account/password_reset.html"), name='reset_password'),
+
+    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(template_name="account/passwor_reset_done.html"), name='password_reset_done'),
+
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="account/new_password.html"), name='password_reset_confirm'),
+
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(template_name="account/reset_password_complete.html"), name="password_reset_complete")
 ]

@@ -11,4 +11,5 @@ urlpatterns = [
     path('all_tasks/<str:username>', all_tasks, name='all_tasks'),
     path('task/<str:username>/', task, name='task'),
     path('delete-task/<slug:slug>/', delete, name='delete-task'),
+    path('tasks/<str:username>/', tasks, name='tasks' ),
 ]

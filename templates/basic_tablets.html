@@ -35,11 +35,11 @@
                           <td>{{ el.user }}</td>
                           <td>{{ el.section }}</td>
                           <td>{{ el.position }}</td>
-                          {% if el.is_online %}<td><small id = "status" style="color: rgb(11, 219, 73);">Online</small></td>
+                          {% if el.is_online and request.user.is_authenticated %}<td><small id = "status" style="color: rgb(11, 219, 73);">Online</small></td>
                           {% else %}
                           <td><small id = "status" style="color: red;">Offline</small></td>
                           {% endif %}
-                          <td><a href="{% url 'user_profile' el.user %}" class="fa-solid fa-user-pen"></a></td>
+                          <td><a href="{% url 'edit_profile' el.user %}" class="fa-solid fa-user-pen"></a></td>
                           <td><a href="{% url 'delete-employe' el.user %}" class="fa-solid fa-trash td-n c-red-500"></a></td>
                         </tr>
                       </tbody>

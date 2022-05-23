@@ -128,14 +128,14 @@ class Employe(models.Model):
 
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
-    position = models.ForeignKey(Postion, on_delete=models.PROTECT)
+    position = models.ForeignKey(Postion, on_delete=models.PROTECT, related_name="model_position")
     section = models.ForeignKey(Section, on_delete=models.PROTECT, related_name='task_section')
     slug = models.SlugField()
-    author = models.ForeignKey('self', on_delete=models.CASCADE,null=True, blank=True)
+    author = models.ForeignKey('self', on_delete=models.SET_NULL,null=True, blank=True)
     first_name = models.CharField(max_length=150, null=True, blank=True)
     last_name = models.CharField(max_length=150, null=True, blank=True)
     email = models.EmailField(max_length=150, null=True, blank=True)
-    gender = models.CharField(max_length=150, choices=choice, blank=True, null=True)
+    gender = models.CharField(max_length=150, choices=choice, blank=True, null=True, default=choice[0][0])
     bio = models.TextField(null=True, blank=True)
     adress = models.TextField(null=True, blank=True)
     status = models.BooleanField(default=False)
@@ -143,6 +143,7 @@ class Employe(models.Model):
     email_add = models.ManyToManyField(Email)
     country = models.CharField(max_length=120, choices=COUNTRY, blank=True, null=True)
     is_online = models.BooleanField(default = False)
+    email = models.EmailField(max_length=150, null=True, blank=True)
     date = models.DateField(auto_now_add=True, null=True)
         
 

@@ -136,28 +136,12 @@
                 </a>
               </div>
               <!-- /Logo -->
-              <h4 class="mb-2">Register</h4>
+              <h4 class="mb-2">Password reset sent</h4><br>
 
               <form id="formAuthentication" class="mb-3" action="" method="POST">{% csrf_token %}
-                <div class="mb-3">
-                  <label for="email" class="form-label">Username</label>
-                  {{ form.username }}
-                </div>
-                <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
-                  {{ form.email }}
-                </div>
-                <div class="mb-3 form-password-toggle">
-                  <div class="d-flex justify-content-between">
-                    <label class="form-label" for="password">Password</label>
-                  </div>
-                  <div class="input-group input-group-merge">
-                    {{ form.password }}
-                    <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
-                  </div>
-                </div>
-                <div class="mb-3">
-                  <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                    <h2 class="mb-2">We’ve emailed you instructions for setting your password, if an account exists with the email you entered. You should receive them shortly.
+
+                        If you don’t receive an email, please make sure you’ve entered the address you registered with, and check your spam folder.</h2><br>
                 </div>
               </form>
             </div>

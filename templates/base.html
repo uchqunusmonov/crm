@@ -199,7 +199,7 @@
                     </div>
                   </div>
                   <div class="peer peer-greed">
-                    <h5 class="lh-1 mB-0 logo-text">Maxsoft-CRM</h5>
+                    <h5 class="lh-1 mB-0 logo-text">CRM</h5>
                   </div>
                 </div>
               </a>
@@ -225,7 +225,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="sidebar-link" href="{% url 'email-box' request.user.username %}">
+            <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/email">
               <span class="icon-holder">
                 <i class="c-blue-500 fa-solid fa-envelope"></i>
               </span>
@@ -233,7 +233,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/charts">
+            <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/compose">
               <span class="icon-holder">
                 <i class="c-blue-500 fa-solid fa-share-from-square"></i>
               </span>
@@ -249,7 +249,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="sidebar-link" href="">
+            <a class="sidebar-link" href="#1">
               <span class="icon-holder">
                 <i class="c-blue-500 fa-solid fa-comment"></i>
               </span>
@@ -257,122 +257,12 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/charts">
+            <a class="sidebar-link" href="{% url 'tasks' request.user.username %}">
               <span class="icon-holder">
-                <i class="c-blue-500 fa-solid fa-chart-bar"></i>
+                <i class="fas fa-tasks c-blue-500"></i>
               </span>
-              <span class="title">Charts</span>
+              <span class="title">Tasks Control</span>
             </a>
-          </li>
-          <li class="nav-item">
-            <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/forms">
-              <span class="icon-holder">
-                <i class="c-blue-500 fa-brands fa-wpforms"></i>
-              </span>
-              <span class="title">Forms</span>
-            </a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/ui">
-              <span class="icon-holder">
-                <i class="c-blue-500 fa-solid fa-palette"></i>
-              </span>
-              <span class="title">UI Elements</span>
-            </a>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="dropdown-toggle" href="javascript:void(0);">
-              <span class="icon-holder">
-                <i class="c-blue-500 fa-solid fa-table"></i>
-              </span>
-              <span class="title">Tables</span>
-              <span class="arrow">
-                <i class="fa-solid fa-angles-right"></i>
-              </span>
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/basic-table">Basic Table</a>
-              </li>
-              <li>
-                <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/datatable">Data Table</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="dropdown-toggle" href="javascript:void(0);">
-              <span class="icon-holder">
-                <i class="c-blue-500 fa-solid fa-map-location"></i>
-              </span>
-              <span class="title">Maps</span>
-              <span class="arrow">
-                <i class="fa-solid fa-angles-right"></i>
-              </span>
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="http://symfonator.herokuapp.com/admin/google-maps">Google Map</a>
-              </li>
-              <li>
-                <a href="http://symfonator.herokuapp.com/admin/vector-maps">Vector Map</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="dropdown-toggle" href="javascript:void(0);">
-              <span class="icon-holder">
-                <i class="c-blue-500 fa-solid fa-file"></i>
-              </span>
-              <span class="title">Pages</span>
-              <span class="arrow">
-                <i class="fa-solid fa-angles-right"></i>
-              </span>
-            </a>
-            <ul class="dropdown-menu">
-              <li>
-                <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/404">404</a>
-              </li>
-              <li>
-                <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/500">500</a>
-              </li>
-              <li>
-                <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/signup">Sign Up</a>
-              </li>
-            </ul>
-          </li>
-          <li class="nav-item dropdown">
-            <a class="dropdown-toggle" href="javascript:void(0);">
-              <span class="icon-holder">
-                <i class="c-blue-500 fa-solid fa-list"></i>
-              </span>
-              <span class="title">Multiple Levels</span>
-              <span class="arrow">
-                <i class="fa-solid fa-angles-right"></i>
-              </span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="nav-item dropdown">
-                <a href="javascript:void(0);">
-                  <span>Menu Item</span>
-                </a>
-              </li>
-              <li class="nav-item dropdown">
-                <a href="javascript:void(0);">
-                  <span>Menu Item</span>
-                  <span class="arrow">
-                    <i class="fa-solid fa-angles-right"></i>
-                  </span>
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a href="javascript:void(0);">Menu Item</a>
-                  </li>
-                  <li>
-                    <a href="javascript:void(0);">Menu Item</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
           </li>
           <div class="ps__rail-x" style="left: 0px; bottom: 0px;">
             <div class="ps__thumb-x" tabindex="0" style="left: 0px; width: 0px;"></div>
@@ -618,7 +508,6 @@
         </div>
       </div>
       {% block content %}
-
       {% endblock content %}
        <!-- ### $App Screen Footer ### -->
        <footer class="bdT ta-c p-30 lh-0 fsz-sm c-grey-600">
@@ -646,7 +535,7 @@
 
   <script src="{% static 'assets/app.js' %}"></script>
   <div class="jvectormap-tip"></div>
-
+  
 
   <div class="jvectormap-tip"></div>
   <div class="jvectormap-tip"></div>
