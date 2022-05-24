@@ -36,12 +36,29 @@ class AddAdmin(forms.ModelForm):
 class PositionForm(forms.ModelForm):
     class Meta:
         model = Employe
-        fields = ['section','position', 'user', 'author', 'country']
+        fields = ['section','position', 'user', 'author', 'country', 'email', 'password_email']
+
+        widgets = {
+            'password_email':forms.TextInput(attrs={
+                'class':'form-control',
+                'placeholder':'Enter your password',
+                'type':'password',
+                'name':'password',
+                'id':'password',
+                'aria-describedby':'password'
+            }),
+            'email':forms.TextInput(attrs={
+                'class':'form-control',
+                'placeholder':'Enter your email',
+                'type':'email',
+            }),
+        }
 
         def __init__(self, user, **kwargs) -> None:
             super(PositionForm, self).__init__(**kwargs)
             if user:
                 self.fields['section'].queryset = Employe.objects.create(user=user)
+
 
 
 

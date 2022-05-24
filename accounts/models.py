@@ -85,20 +85,7 @@ class Postion(models.Model):
 
 
 
-class Email(models.Model):
-    email = models.EmailField(max_length=250, blank=True, null=True)
-    author = models.ForeignKey(User, models.CASCADE, related_name='authors', blank=True, null=True)
-    slug = models.SlugField()
 
-
-    def __str__(self) -> str:
-        return self.email
-
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.email)
-
-        return super().save(*args, **kwargs)
 
 
 class Employe(models.Model):
@@ -134,7 +121,6 @@ class Employe(models.Model):
     author = models.ForeignKey('self', on_delete=models.SET_NULL,null=True, blank=True)
     first_name = models.CharField(max_length=150, null=True, blank=True)
     last_name = models.CharField(max_length=150, null=True, blank=True)
-    email = models.EmailField(max_length=150, null=True, blank=True)
     gender = models.CharField(max_length=150, choices=choice, blank=True, null=True, default=choice[0][0])
     bio = models.TextField(null=True, blank=True)
     adress = models.TextField(null=True, blank=True)
@@ -145,7 +131,8 @@ class Employe(models.Model):
     is_online = models.BooleanField(default = False)
     email = models.EmailField(max_length=150, null=True, blank=True)
     date = models.DateField(auto_now_add=True, null=True)
-        
+    password_email = models.CharField(max_length=35, null=True)
+    email = models.EmailField()
 
 
     def get_country(el):
