@@ -497,45 +497,45 @@
 
                       <!-- Chat Box -->
                       
-                      <div class="chat-box">
-                        <div id="chat-log" class="scroll">
-                          <div class="messages__all">
-                            {% for msg in fetch_all_message %}
-                              {% if request.user == msg.user %}
+                    <div class="chat-box">
+                      <div id="chat-log" class="scroll">
+                        <div class="messages__all" id="message__all">
+                          {% for msg in fetch_all_message %}
+                            {% if request.user == msg.user %}
 
-                                <p class="chat_box ml-auto" id="{{msg.id}}">
+                              <p class="chat_box ml-auto" id="{{msg.id}}">
+                                <br/>
+                                
+                                <span class="message" style="padding: 7px; font-weight: bold;"> {{msg.message_detail.msg}}</span>
+                                
+                                <br/>
+                                {% if msg.user == request.user  %}
+                                <span id = "as_read" style="padding-left: 95%; color: #2196f3; font-weight: bold;">{% if msg.message_detail.read %} ✔✔ {% else %}✔{% endif %}</span>
+                                {% endif %}
+                                
+                                <small> <b class="check_user">{{msg.user.username}}</b> - {{msg.message_detail.timestamp | convert_date | date:"M d'Y f"}}</small>
+                              </p>
+                            {% else %}
+                                <p class="chat_box" id="{{msg.id}}">
                                   <br/>
-                                  
-                                  <span class="message" style="padding: 7px; font-weight: bold;"> {{msg.message_detail.msg}}</span>
+                                  <span class="message" style="padding: 7px; font-weight: bold;">{{msg.message_detail.msg}}</span>
                                   
                                   <br/>
                                   {% if msg.user == request.user  %}
                                   <span id = "as_read" style="padding-left: 95%; color: #2196f3; font-weight: bold;">{% if msg.message_detail.read %} ✔✔ {% else %}✔{% endif %}</span>
                                   {% endif %}
-                                  
                                   <small> <b class="check_user">{{msg.user.username}}</b> - {{msg.message_detail.timestamp | convert_date | date:"M d'Y f"}}</small>
                                 </p>
-                              {% else %}
-                                  <p class="chat_box" id="{{msg.id}}">
-                                    <br/>
-                                    <span class="message" style="padding: 7px; font-weight: bold;">{{msg.message_detail.msg}}</span>
-                                    
-                                    <br/>
-                                    {% if msg.user == request.user  %}
-                                    <span id = "as_read" style="padding-left: 95%; color: #2196f3; font-weight: bold;">{% if msg.message_detail.read %} ✔✔ {% else %}✔{% endif %}</span>
-                                    {% endif %}
-                                    <small> <b class="check_user">{{msg.user.username}}</b> - {{msg.message_detail.timestamp | convert_date | date:"M d'Y f"}}</small>
-                                  </p>
-                              {% endif %}
-                            {% endfor %}
-                          </div>
-                        </div>
-                        <br>
-                        <div class="d-flex message__input">
-                          <input id="chat-message-input" type="text" placeholder="Enter Message..." autofocus style="width: 95%; padding: 8px;">
-                          <input id="chat-message-submit" type="button" value="Send" style="padding: 6px;">
+                            {% endif %}
+                          {% endfor %}
                         </div>
                       </div>
+                      <br>
+                      <div class="d-flex message__input">
+                        <input id="chat-message-input" type="text" placeholder="Enter Message..." autofocus style="width: 95%; padding: 8px;">
+                        <input id="chat-message-submit" type="button" value="Send" style="padding: 6px;">
+                      </div>
+                    </div>
                       {{ room_name|json_script:"room_name" }}
                       <div class="ps__rail-x" style="left: 0px; bottom: 0px">
                         <div
@@ -695,9 +695,20 @@
       }
     </script>
 
+    <script>
+      var objDiv = document.getElementById('message__all');
+      objDiv.scrollTop = objDiv.scrollHeight;
+      console.log(objDiv)
+    </script>
+    
   </body>
 </html>
 
+<!-- <script>
+  var objDiv = document.getElementsByClassName('message_all');
+  objDiv.scrollTop = objDiv.scrollHeight;
+  console.log(objDiv)
+</script> -->
 
 <script>
   const roomName = JSON.parse(document.getElementById('room_name').textContent);
@@ -716,7 +727,7 @@
 
   WebSocket.onopen = send_all_read()
 
-  var messageBody = document.querySelector('#chat-log');
+  var messageBody = document.querySelector('.scroll');
   messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
 
   const add_element = (data,box_color) => {        
