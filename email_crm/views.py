@@ -1,4 +1,3 @@
-from operator import index
 from django.shortcuts import redirect, render
 from django.core.mail import send_mail
 import json

@@ -1,5 +1,4 @@
 from email.policy import default
-from tkinter import Widget
 from django import forms
 from .models import *
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm

@@ -10,8 +10,7 @@
   <meta http-equiv="Expires" content="0">
   <link rel="stylesheet" href="{% static 'font-awesome/font-awesome.min.css' %}">
   <script src="https://kit.fontawesome.com/bd8bfefed0.js" crossorigin="anonymous"></script>
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Welcome to Symfonator - Responsive Bootstrap 4 Admin Template on the Symfony Foundation!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">  
   <link rel="stylesheet" href="{% static 'css/app.css' %}">
   {% block static %}
   {% endblock static %}
@@ -225,7 +224,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="sidebar-link" href="http://symfonator.herokuapp.com/admin/email">
+            <a class="sidebar-link" href="{% url 'email-box' request.user.username %}">
               <span class="icon-holder">
                 <i class="c-blue-500 fa-solid fa-envelope"></i>
               </span>
@@ -249,11 +248,8 @@
             </a>
           </li>
           <li class="nav-item">
-<<<<<<< HEAD
             <a class="sidebar-link" href="#1">
-=======
             <a class="sidebar-link" href="{% url 'chat' %}">
->>>>>>> 685419117a262dc6602a78853f3e280a335fc480
               <span class="icon-holder">
                 <i class="c-blue-500 fa-solid fa-comment"></i>
               </span>
