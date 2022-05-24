@@ -90,11 +90,10 @@ class Postion(models.Model):
 
 class Employe(models.Model):
     choice = (
-        ('',''),
+        ('Not specified','Not specified'),
         ('Male','Male'),
         ('Female','Female'),
     )
-
     COUNTRY = (
         ('Tashkent','Tashkent'),
         ('Samarkand','Samarkand'),
@@ -112,7 +111,6 @@ class Employe(models.Model):
 
     )
 
-
     
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     position = models.ForeignKey(Postion, on_delete=models.PROTECT, related_name="model_position")
@@ -121,12 +119,12 @@ class Employe(models.Model):
     author = models.ForeignKey('self', on_delete=models.SET_NULL,null=True, blank=True)
     first_name = models.CharField(max_length=150, null=True, blank=True)
     last_name = models.CharField(max_length=150, null=True, blank=True)
+    email = models.EmailField(max_length=150, null=True, blank=True)
     gender = models.CharField(max_length=150, choices=choice, blank=True, null=True, default=choice[0][0])
     bio = models.TextField(null=True, blank=True)
     adress = models.TextField(null=True, blank=True)
     status = models.BooleanField(default=False)
     avatar = models.ImageField(upload_to='avatar/', null=True, blank=True)
-    email_add = models.ManyToManyField(Email)
     country = models.CharField(max_length=120, choices=COUNTRY, blank=True, null=True)
     is_online = models.BooleanField(default = False)
     email = models.EmailField(max_length=150, null=True, blank=True)
@@ -150,7 +148,7 @@ class Employe(models.Model):
     def __str__(self) -> str:
         return str(self.user)
 
-    
+
 
 
 class AdduserCount(models.Model):

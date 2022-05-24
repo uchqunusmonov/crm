@@ -150,17 +150,17 @@ def employe(request, username):
                 'users':users,
                 'employe_filt':employe_filt
             }
-            if request.method == 'POST':
-                position = PositionForm(request.POST, request.FILES)
-                if position.is_valid():
-                    position.save()
-                    user_id = request.POST.get('user')
-                    user_data = User.objects.get(id=user_id)
-                    user_data.has_profile_true()
-                    user_data.save()                    
-                    return redirect('user_registor', username)
-                else:
-                    return redirect('error', username)
+        if request.method == 'POST':
+            position = PositionForm(request.POST, request.FILES)
+            if position.is_valid():
+                position.save()
+                user_id = request.POST.get('user')
+                user_data = User.objects.get(id=user_id)
+                user_data.has_profile_true()
+                user_data.save()                    
+                return redirect('user_registor', username)
+            else:
+                return redirect('error', username)
     return render(request, 'account/employe.html', context)
 
 

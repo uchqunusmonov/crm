@@ -7,7 +7,7 @@ class AddAdmin(forms.ModelForm):
     
     class Meta:
         model = User
-        fields = ['username','password', 'remember_me', 'email']
+        fields = ['username','password', 'remember_me']
 
         widgets = {
             'username':forms.TextInput(attrs={
@@ -25,11 +25,6 @@ class AddAdmin(forms.ModelForm):
             'remember_me':forms.CheckboxInput(attrs={
                 'class':'form-check-input'
             }),
-            'email':forms.TextInput(attrs={
-                'class':'form-control',
-                'placeholder':'Enter your email',
-                'type':'email'
-    }),
          }
 
 class PositionForm(forms.ModelForm):
@@ -42,9 +37,6 @@ class PositionForm(forms.ModelForm):
                 'class':'form-control',
                 'placeholder':'Enter your password',
                 'type':'password',
-                'name':'password',
-                'id':'password',
-                'aria-describedby':'password'
             }),
             'email':forms.TextInput(attrs={
                 'class':'form-control',
