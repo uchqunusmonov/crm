@@ -531,8 +531,8 @@
                         </div>
                       </div>
                       <br>
-                      <div class="d-flex message__input">
-                        <input id="chat-message-input" type="text" placeholder="Enter Message..." autofocus style="width: 95%; padding: 8px;">
+                      <div class="d-flex message__input" style=" justify-content: right;">
+                        <input id="chat-message-input" type="text" placeholder="Enter Message..." autofocus style="width: 93%; padding: 8px;">
                         <input id="chat-message-submit" type="button" value="Send" style="padding: 6px;">
                       </div>
                     </div>
@@ -574,6 +574,7 @@
         </footer>
       </div>
     </div>
+    
 
     <script>
       (function () {
@@ -696,9 +697,18 @@
     </script>
 
     <script>
-      var objDiv = document.getElementById('message__all');
-      objDiv.scrollTop = objDiv.scrollHeight;
-      console.log(objDiv)
+
+      const messagesAll = document.getElementById('message__all');
+ 
+       
+
+      const scrollToBottom1 = (node) => {
+        node.scrollTop = node.scrollHeight;
+        console.log(node.scrollTop)
+      }
+
+      scrollToBottom1(messagesAll)
+      
     </script>
     
   </body>
@@ -709,6 +719,18 @@
   objDiv.scrollTop = objDiv.scrollHeight;
   console.log(objDiv)
 </script> -->
+
+<script>
+  var messages = document.getElementsByClassName('message')
+  console.log(messages)
+  function scrollToBottom() {
+    messages.scrollTop = messages.scrollHeight;
+  }
+  console.log(scrollToBottom())
+
+  scrollToBottom();
+  console.log("Salom")
+</script>
 
 <script>
   const roomName = JSON.parse(document.getElementById('room_name').textContent);
@@ -729,6 +751,9 @@
 
   var messageBody = document.querySelector('.scroll');
   messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+
+  
+  
 
   const add_element = (data,box_color) => {        
       const user = data.user === '{{request.user.username}}' ? "You" : data.user
